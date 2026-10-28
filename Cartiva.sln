@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36616.10
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cartiva", "Cartiva.csproj", "{9A44C676-8B39-6C86-EDB6-AD6B7E763259}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cartiva.Web", "Cartiva.Web\Cartiva.Web.csproj", "{E47A6167-16B9-024C-8C60-66EE3CE6EC90}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9A44C676-8B39-6C86-EDB6-AD6B7E763259}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A44C676-8B39-6C86-EDB6-AD6B7E763259}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A44C676-8B39-6C86-EDB6-AD6B7E763259}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A44C676-8B39-6C86-EDB6-AD6B7E763259}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E47A6167-16B9-024C-8C60-66EE3CE6EC90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E47A6167-16B9-024C-8C60-66EE3CE6EC90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E47A6167-16B9-024C-8C60-66EE3CE6EC90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E47A6167-16B9-024C-8C60-66EE3CE6EC90}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CADB15F6-DCC6-4C50-879B-A976FEC7B7C4}
+	EndGlobalSection
+EndGlobal

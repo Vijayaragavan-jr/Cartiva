@@ -1,0 +1,326 @@
+@model List<Cartiva.Web.Models.UserViewModel>
+
+@{
+    ViewData["Title"] = "Users";
+}
+
+<div class="container-fluid py-4 users-page">
+
+    <!-- PAGE HEADER -->
+
+    <div class="page-header mb-4">
+
+        <div>
+
+            <div class="text-uppercase text-primary fw-semibold small mb-1">
+                Administration
+            </div>
+
+            <h1 class="page-title mb-2">
+                Users
+            </h1>
+
+            <p class="page-subtitle mb-0">
+                Manage and review registered Cartiva accounts.
+            </p>
+
+        </div>
+
+
+        <div class="page-header-actions">
+
+            <div class="users-count-badge">
+                @Model.Count User(s)
+            </div>
+
+            <a asp-controller="Dashboard"
+               asp-action="Index"
+               class="btn btn-outline-secondary px-4">
+                Dashboard
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- USERS CARD -->
+
+    <div class="users-card">
+
+        <!-- CARD HEADER -->
+
+        <div class="users-card-header">
+
+            <div>
+
+                <div class="section-eyebrow">
+                    USER MANAGEMENT
+                </div>
+
+                <h3 class="section-title mb-1">
+                    Registered Users
+                </h3>
+
+                <p class="section-description">
+                    View registered accounts and their registration details.
+                </p>
+
+            </div>
+
+
+            <div class="user-search-box">
+
+                <label for="userSearch"
+                       class="search-label">
+                    Search Users
+                </label>
+
+                <input type="text"
+                       id="userSearch"
+                       class="form-control"
+                       placeholder="Search by username, email or date..." />
+
+            </div>
+
+        </div>
+
+
+        @if (Model.Count == 0)
+        {
+            <!-- EMPTY STATE -->
+
+            <div class="users-empty-state">
+
+                <div class="users-empty-icon">
+                    👤
+                </div>
+
+                <h4 class="fw-bold mb-2">
+                    No users found
+                </h4>
+
+                <p class="text-muted mb-0">
+                    There are currently no registered users.
+                </p>
+
+            </div>
+        }
+        else
+        {
+            <!-- USERS TABLE -->
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle mb-0"
+                       id="userTable">
+
+                    <thead>
+
+                        <tr>
+
+                            <th class="users-id-column">
+                                ID
+                            </th>
+
+                            <th>
+                                USERNAME
+                            </th>
+
+                            <th>
+                                EMAIL
+                            </th>
+
+                            <th>
+                                REGISTERED ON
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        @foreach (var user in Model)
+                        {
+                            <tr class="user-row">
+
+                                <td class="users-id-column">
+
+                                    <span class="user-id-badge">
+                                        #@user.Id
+                                    </span>
+
+                                </td>
+
+
+                                <td>
+
+                                    <div class="user-profile-cell">
+
+                                        <div class="user-avatar">
+                                            @(
+                                                string.IsNullOrWhiteSpace(user.Username)
+                                                    ? "U"
+                                                    : user.Username.Substring(0, 1).ToUpper()
+                                            )
+                                        </div>
+
+                                        <div>
+
+                                            <div class="user-name">
+                                                @user.Username
+                                            </div>
+
+                                            <div class="user-role">
+                                                Cartiva User
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+
+                                <td>
+
+                                    <span class="user-email">
+                                        @user.Email
+                                    </span>
+
+                                </td>
+
+
+                                <td>
+
+                                    <span class="user-date">
+                                        @user.CreatedAt.ToString("dd MMM yyyy, hh:mm tt")
+                                    </span>
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <!-- NO SEARCH RESULTS -->
+
+            <div id="noUserSearchResults"
+                 class="users-search-empty"
+                 style="display:none;">
+
+                <div class="users-search-empty-icon">
+                    🔍
+                </div>
+
+                <h5 class="fw-bold mb-1">
+                    No matching users
+                </h5>
+
+                <p class="text-muted mb-0">
+                    Try searching with a different username, email or date.
+                </p>
+
+            </div>
+        }
+
+    </div>
+
+</div>
+
+
+@section Scripts
+{
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const searchInput =
+                document.getElementById("userSearch");
+
+            const rows =
+                document.querySelectorAll(".user-row");
+
+            const noResults =
+                document.getElementById("noUserSearchResults");
+
+
+            if (!searchInput) {
+                return;
+            }
+
+
+            searchInput.addEventListener(
+                "input",
+                function () {
+
+                    const searchValue =
+                        searchInput.value
+                            .toLowerCase()
+                            .trim();
+
+
+                    let visibleRows = 0;
+
+
+                    rows.forEach(function (row) {
+
+                        const username =
+                            row.querySelector(".user-name")
+                                ?.textContent
+                                .toLowerCase() ?? "";
+
+
+                        const email =
+                            row.querySelector(".user-email")
+                                ?.textContent
+                                .toLowerCase() ?? "";
+
+
+                        const date =
+                            row.querySelector(".user-date")
+                                ?.textContent
+                                .toLowerCase() ?? "";
+
+
+                        const matches =
+                            username.includes(searchValue) ||
+                            email.includes(searchValue) ||
+                            date.includes(searchValue);
+
+
+                        row.style.display =
+                            matches ? "" : "none";
+
+
+                        if (matches) {
+                            visibleRows++;
+                        }
+
+                    });
+
+
+                    if (noResults) {
+
+                        noResults.style.display =
+                            visibleRows === 0
+                                ? "block"
+                                : "none";
+
+                    }
+
+                }
+            );
+
+        });
+
+    </script>
+}

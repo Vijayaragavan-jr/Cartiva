@@ -1,0 +1,16 @@
+bin/
+obj/
+.vs/
+.vs_backup/
+.vscode/
+*.user
+*.suo
+appsettings.json
+appsettings.*.json
+.env
+.env.*
+*.log
+Thumbs.db
+.DS_Store
+*.bak
+**/PublishProfiles/*.pubxml

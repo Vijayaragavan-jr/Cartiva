@@ -1,0 +1,268 @@
+@model Cartiva.Web.Models.DashboardViewModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="container-fluid py-4 dashboard-page">
+
+    <!-- Page Header -->
+    <div class="page-header mb-4">
+        <div>
+            <div class="text-uppercase text-primary fw-semibold small mb-1">
+                Overview
+            </div>
+
+            <h1 class="page-title mb-2">
+                Dashboard
+            </h1>
+
+            <p class="page-subtitle mb-0">
+                Manage your Cartiva e-commerce operations from one place.
+            </p>
+        </div>
+
+        <div class="page-header-actions">
+            <a asp-controller="Product"
+               asp-action="Index"
+               class="btn btn-primary px-4">
+                Manage Products
+            </a>
+
+            <a asp-controller="Cart"
+               asp-action="Index"
+               class="btn btn-outline-secondary px-4">
+                View Cart
+            </a>
+        </div>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="row g-4 mb-4">
+
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="dashboard-kpi-card h-100">
+
+                <div class="kpi-top">
+                    <div>
+                        <div class="kpi-label">
+                            Total Products
+                        </div>
+
+                        <div class="kpi-value">
+                            @Model.TotalProducts
+                        </div>
+                    </div>
+
+                    <div class="kpi-icon kpi-icon-primary">
+                        <span>▦</span>
+                    </div>
+                </div>
+
+                <div class="kpi-footer">
+                    <span>Available products</span>
+
+                    <a asp-controller="Product"
+                       asp-action="Index">
+                        View →
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="dashboard-kpi-card h-100">
+
+                <div class="kpi-top">
+                    <div>
+                        <div class="kpi-label">
+                            My Cart
+                        </div>
+
+                        <div class="kpi-value">
+                            @Model.TotalCarts
+                        </div>
+                    </div>
+
+                    <div class="kpi-icon kpi-icon-success">
+                        <span>🛒</span>
+                    </div>
+                </div>
+
+                <div class="kpi-footer">
+                    <span>Active cart</span>
+
+                    <a asp-controller="Cart"
+                       asp-action="Index">
+                        View →
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="dashboard-kpi-card h-100">
+
+                <div class="kpi-top">
+                    <div>
+                        <div class="kpi-label">
+                            Cart Items
+                        </div>
+
+                        <div class="kpi-value">
+                            @Model.TotalCartItems
+                        </div>
+                    </div>
+
+                    <div class="kpi-icon kpi-icon-warning">
+                        <span>☷</span>
+                    </div>
+                </div>
+
+                <div class="kpi-footer">
+                    <span>Items in cart</span>
+
+                    <a asp-controller="Cart"
+                       asp-action="Index">
+                        Manage →
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="dashboard-kpi-card h-100">
+
+                <div class="kpi-top">
+                    <div>
+                        <div class="kpi-label">
+                            Cart Total
+                        </div>
+
+                        <div class="kpi-value currency-value">
+                            ₹@Model.CartTotal.ToString("N2")
+                        </div>
+                    </div>
+
+                    <div class="kpi-icon kpi-icon-info">
+                        <span>₹</span>
+                    </div>
+                </div>
+
+                <div class="kpi-footer">
+                    <span>Current cart value</span>
+
+                    <a asp-controller="Cart"
+                       asp-action="Index">
+                        Summary →
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="dashboard-content-card">
+
+        <div class="content-card-header">
+
+            <div>
+                <div class="section-eyebrow">
+                    MANAGEMENT
+                </div>
+
+                <h3 class="section-title">
+                    Quick Actions
+                </h3>
+
+                <p class="section-description">
+                    Quickly access the main areas of your Cartiva application.
+                </p>
+            </div>
+
+        </div>
+
+        <div class="row g-3">
+
+            <div class="col-12 col-md-4">
+                <a asp-controller="Product"
+                   asp-action="Index"
+                   class="quick-action-card">
+
+                    <div class="quick-action-icon">
+                        ▦
+                    </div>
+
+                    <div>
+                        <h5>Product Management</h5>
+
+                        <p>
+                            Create, edit, delete and upload products.
+                        </p>
+                    </div>
+
+                    <span class="quick-action-arrow">
+                        →
+                    </span>
+
+                </a>
+            </div>
+
+            <div class="col-12 col-md-4">
+                <a asp-controller="Cart"
+                   asp-action="Index"
+                   class="quick-action-card">
+
+                    <div class="quick-action-icon">
+                        🛒
+                    </div>
+
+                    <div>
+                        <h5>Shopping Cart</h5>
+
+                        <p>
+                            Review products and manage cart quantities.
+                        </p>
+                    </div>
+
+                    <span class="quick-action-arrow">
+                        →
+                    </span>
+
+                </a>
+            </div>
+
+            <div class="col-12 col-md-4">
+                <a asp-controller="User"
+                   asp-action="Index"
+                   class="quick-action-card">
+
+                    <div class="quick-action-icon">
+                        👤
+                    </div>
+
+                    <div>
+                        <h5>User Management</h5>
+
+                        <p>
+                            View registered Cartiva users.
+                        </p>
+                    </div>
+
+                    <span class="quick-action-arrow">
+                        →
+                    </span>
+
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,739 @@
+@model List<Cartiva.Web.Models.ProductViewModel>
+
+@{
+    ViewData["Title"] = "Products";
+}
+
+<div class="container-fluid py-4 products-page">
+
+    <!-- PAGE HEADER -->
+    <div class="page-header mb-4">
+
+        <div>
+            <div class="text-uppercase text-primary fw-semibold small mb-1">
+                Catalog
+            </div>
+
+            <h1 class="page-title mb-2">
+                Products
+            </h1>
+
+            <p class="page-subtitle mb-0">
+                Manage your products, inventory and shopping catalog.
+            </p>
+        </div>
+
+        <div class="page-header-actions">
+
+            <button type="button"
+                    class="btn btn-primary px-4"
+                    id="createProductBtn">
+                + Create Product
+            </button>
+
+            <a asp-controller="Dashboard"
+               asp-action="Index"
+               class="btn btn-outline-secondary px-4">
+                Dashboard
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- ALERTS -->
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show shadow-sm"
+             role="alert">
+
+            <strong>Success:</strong>
+            @TempData["SuccessMessage"]
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert">
+            </button>
+
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show shadow-sm"
+             role="alert">
+
+            <strong>Error:</strong>
+            @TempData["ErrorMessage"]
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert">
+            </button>
+
+        </div>
+    }
+
+
+    <!-- CREATE PRODUCT -->
+
+    <div id="createProductSection"
+         class="product-form-card mb-4"
+         style="display:none;">
+
+        <div class="product-form-header">
+
+            <div>
+
+                <div class="section-eyebrow">
+                    NEW PRODUCT
+                </div>
+
+                <h3 class="section-title mb-1">
+                    Create Product
+                </h3>
+
+                <p class="section-description">
+                    Add a new product to your Cartiva catalog.
+                </p>
+
+            </div>
+
+            <button type="button"
+                    class="btn-close"
+                    id="closeCreateProduct">
+            </button>
+
+        </div>
+
+
+        <form asp-controller="Product"
+              asp-action="Create"
+              method="post">
+
+            <div class="row g-4">
+
+                <div class="col-12 col-lg-5">
+
+                    <label class="form-label fw-semibold">
+                        Product Name
+                    </label>
+
+                    <input type="text"
+                           name="Name"
+                           class="form-control"
+                           placeholder="Enter product name"
+                           required />
+
+                    <div class="form-text">
+                        Enter the name customers will see.
+                    </div>
+
+                </div>
+
+
+                <div class="col-12 col-lg-4">
+
+                    <label class="form-label fw-semibold">
+                        Description
+                    </label>
+
+                    <input type="text"
+                           name="Description"
+                           class="form-control"
+                           placeholder="Enter product description" />
+
+                    <div class="form-text">
+                        Add a short product description.
+                    </div>
+
+                </div>
+
+
+                <div class="col-12 col-lg-3">
+
+                    <label class="form-label fw-semibold">
+                        Price
+                    </label>
+
+                    <div class="input-group">
+
+                        <span class="input-group-text">
+                            ₹
+                        </span>
+
+                        <input type="number"
+                               name="Price"
+                               class="form-control"
+                               placeholder="0.00"
+                               min="0.01"
+                               step="0.01"
+                               required />
+
+                    </div>
+
+                    <div class="form-text">
+                        Enter the selling price.
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="product-form-actions">
+
+                <button type="submit"
+                        class="btn btn-primary px-4">
+                    Create Product
+                </button>
+
+                <button type="button"
+                        class="btn btn-light border px-4"
+                        id="cancelCreateProduct">
+                    Cancel
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+    <!-- CSV UPLOAD -->
+
+    <div class="catalog-tool-card mb-4">
+
+        <div class="catalog-tool-content">
+
+            <div class="catalog-tool-icon">
+                CSV
+            </div>
+
+
+            <div class="catalog-tool-info">
+
+                <h5 class="fw-bold mb-1">
+                    Bulk Product Upload
+                </h5>
+
+                <p class="text-muted mb-0">
+                    Add multiple products quickly using a CSV file.
+                </p>
+
+            </div>
+
+
+            <form asp-controller="Product"
+                  asp-action="UploadCsv"
+                  method="post"
+                  enctype="multipart/form-data"
+                  class="catalog-upload-form">
+
+                <input type="file"
+                       name="file"
+                       class="form-control"
+                       accept=".csv"
+                       required />
+
+                <button type="submit"
+                        class="btn btn-outline-primary px-4">
+                    Upload CSV
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- PRODUCT CATALOG -->
+
+    <div class="product-catalog-card">
+
+        <div class="product-catalog-header">
+
+            <div>
+
+                <div class="section-eyebrow">
+                    CATALOG
+                </div>
+
+                <h3 class="section-title mb-1">
+                    Product List
+                </h3>
+
+                <p class="section-description">
+                    @Model.Count product(s) available in the catalog.
+                </p>
+
+            </div>
+
+
+            <div class="product-search-box">
+
+                <label class="search-label">
+                    Search Products
+                </label>
+
+                <input type="text"
+                       id="productSearch"
+                       class="form-control"
+                       placeholder="Search by name or description..." />
+
+            </div>
+
+        </div>
+
+
+        @if (Model.Count == 0)
+        {
+            <div class="empty-products-state">
+
+                <div class="empty-products-icon">
+                    ▦
+                </div>
+
+                <h4 class="fw-bold mb-2">
+                    No products available
+                </h4>
+
+                <p class="text-muted mb-4">
+                    Create your first product to start building your catalog.
+                </p>
+
+                <button type="button"
+                        class="btn btn-primary px-4"
+                        id="emptyCreateProductBtn">
+                    Create Product
+                </button>
+
+            </div>
+        }
+        else
+        {
+            <div class="product-grid">
+
+                @foreach (var product in Model)
+                {
+                    <div class="product-card product-row">
+
+                        <div class="product-card-top">
+
+                            <div class="product-number">
+                                #@product.Id
+                            </div>
+
+                            <div class="product-price">
+                                ₹@product.Price.ToString("N2")
+                            </div>
+
+                        </div>
+
+
+                        <div class="product-card-body">
+
+                            <h4 class="product-name mb-2">
+                                @product.Name
+                            </h4>
+
+                            <p class="product-description mb-0">
+
+                                @(string.IsNullOrWhiteSpace(product.Description)
+                                    ? "No description available."
+                                    : product.Description)
+
+                            </p>
+
+                        </div>
+
+
+                        <div class="product-card-footer">
+
+                            <button type="button"
+                                    class="btn btn-sm btn-outline-primary edit-product-btn"
+                                    data-id="@product.Id"
+                                    data-name="@product.Name"
+                                    data-description="@product.Description"
+                                    data-price="@product.Price">
+                                Edit
+                            </button>
+
+
+                            <form asp-controller="Product"
+                                  asp-action="AddToCart"
+                                  method="post"
+                                  class="product-action-form">
+
+                                <input type="hidden"
+                                       name="productId"
+                                       value="@product.Id" />
+
+                                <button type="submit"
+                                        class="btn btn-sm btn-primary">
+                                    Add to Cart
+                                </button>
+
+                            </form>
+
+
+                            <form asp-controller="Product"
+                                  asp-action="Delete"
+                                  method="post"
+                                  class="product-action-form"
+                                  onsubmit="return confirm('Are you sure you want to delete this product?');">
+
+                                <input type="hidden"
+                                       name="id"
+                                       value="@product.Id" />
+
+                                <button type="submit"
+                                        class="btn btn-sm btn-outline-danger">
+                                    Delete
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+        }
+
+    </div>
+
+</div>
+
+
+<!-- EDIT PRODUCT MODAL -->
+
+<div class="modal fade"
+     id="editProductModal"
+     tabindex="-1"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content border-0 shadow-lg">
+
+            <div class="modal-header px-4 py-3">
+
+                <div>
+
+                    <div class="section-eyebrow mb-1">
+                        PRODUCT
+                    </div>
+
+                    <h5 class="modal-title fw-bold">
+                        Edit Product
+                    </h5>
+
+                </div>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+
+            <form asp-controller="Product"
+                  asp-action="Update"
+                  method="post">
+
+                <div class="modal-body p-4">
+
+                    <input type="hidden"
+                           id="editProductId"
+                           name="id" />
+
+
+                    <div class="mb-3">
+
+                        <label class="form-label fw-semibold">
+                            Product Name
+                        </label>
+
+                        <input type="text"
+                               id="editProductName"
+                               name="Name"
+                               class="form-control"
+                               required />
+
+                    </div>
+
+
+                    <div class="mb-3">
+
+                        <label class="form-label fw-semibold">
+                            Description
+                        </label>
+
+                        <input type="text"
+                               id="editProductDescription"
+                               name="Description"
+                               class="form-control" />
+
+                    </div>
+
+
+                    <div>
+
+                        <label class="form-label fw-semibold">
+                            Price
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text">
+                                ₹
+                            </span>
+
+                            <input type="number"
+                                   id="editProductPrice"
+                                   name="Price"
+                                   class="form-control"
+                                   min="0.01"
+                                   step="0.01"
+                                   required />
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="modal-footer px-4 py-3">
+
+                    <button type="button"
+                            class="btn btn-light border px-4"
+                            data-bs-dismiss="modal">
+                        Cancel
+                    </button>
+
+                    <button type="submit"
+                            class="btn btn-primary px-4">
+                        Save Changes
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+@section Scripts
+{
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            /* CREATE PRODUCT */
+
+            const createButton =
+                document.getElementById("createProductBtn");
+
+            const emptyCreateButton =
+                document.getElementById("emptyCreateProductBtn");
+
+            const createSection =
+                document.getElementById("createProductSection");
+
+            const closeCreate =
+                document.getElementById("closeCreateProduct");
+
+            const cancelCreate =
+                document.getElementById("cancelCreateProduct");
+
+
+            function showCreateForm() {
+
+                if (!createSection) {
+                    return;
+                }
+
+                createSection.style.display = "block";
+
+                createSection.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+
+            }
+
+
+            function hideCreateForm() {
+
+                if (!createSection) {
+                    return;
+                }
+
+                createSection.style.display = "none";
+
+            }
+
+
+            if (createButton) {
+
+                createButton.addEventListener(
+                    "click",
+                    showCreateForm
+                );
+
+            }
+
+
+            if (emptyCreateButton) {
+
+                emptyCreateButton.addEventListener(
+                    "click",
+                    showCreateForm
+                );
+
+            }
+
+
+            if (closeCreate) {
+
+                closeCreate.addEventListener(
+                    "click",
+                    hideCreateForm
+                );
+
+            }
+
+
+            if (cancelCreate) {
+
+                cancelCreate.addEventListener(
+                    "click",
+                    hideCreateForm
+                );
+
+            }
+
+
+            /* PRODUCT SEARCH */
+
+            const searchInput =
+                document.getElementById("productSearch");
+
+
+            if (searchInput) {
+
+                searchInput.addEventListener(
+                    "input",
+                    function () {
+
+                        const searchValue =
+                            searchInput.value
+                                .toLowerCase()
+                                .trim();
+
+
+                        const cards =
+                            document.querySelectorAll(
+                                ".product-row"
+                            );
+
+
+                        cards.forEach(function (card) {
+
+                            const name =
+                                card.querySelector(
+                                    ".product-name"
+                                )?.textContent
+                                .toLowerCase() ?? "";
+
+
+                            const description =
+                                card.querySelector(
+                                    ".product-description"
+                                )?.textContent
+                                .toLowerCase() ?? "";
+
+
+                            card.style.display =
+                                name.includes(searchValue) ||
+                                description.includes(searchValue)
+                                    ? ""
+                                    : "none";
+
+                        });
+
+                    }
+                );
+
+            }
+
+
+            /* EDIT PRODUCT */
+
+            const editButtons =
+                document.querySelectorAll(
+                    ".edit-product-btn"
+                );
+
+
+            editButtons.forEach(function (button) {
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+                        document.getElementById(
+                            "editProductId"
+                        ).value =
+                            button.dataset.id;
+
+
+                        document.getElementById(
+                            "editProductName"
+                        ).value =
+                            button.dataset.name;
+
+
+                        document.getElementById(
+                            "editProductDescription"
+                        ).value =
+                            button.dataset.description;
+
+
+                        document.getElementById(
+                            "editProductPrice"
+                        ).value =
+                            button.dataset.price;
+
+
+                        const modal =
+                            new bootstrap.Modal(
+                                document.getElementById(
+                                    "editProductModal"
+                                )
+                            );
+
+
+                        modal.show();
+
+                    }
+                );
+
+            });
+
+        });
+
+    </script>
+}

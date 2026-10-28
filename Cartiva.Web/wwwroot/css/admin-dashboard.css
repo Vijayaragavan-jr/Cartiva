@@ -1,0 +1,37 @@
+/* ================================
+   Cartiva Dashboard
+   ================================ */
+
+.dashboard-section {
+    width: 100%;
+}
+
+/* KPI Cards */
+
+.kpi-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.kpi-card:hover {
+    transform: translateY(-2px);
+}
+
+/* Quick Actions */
+
+.quick-action {
+    transition: all 0.2s ease;
+}
+
+.quick-action:hover {
+    transform: translateY(-2px);
+}
+
+/* Responsive */
+
+@media (max-width: 767.98px) {
+
+    .dashboard-section {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}

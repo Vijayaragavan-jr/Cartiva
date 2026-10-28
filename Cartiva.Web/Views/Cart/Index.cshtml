@@ -1,0 +1,337 @@
+@model Cartiva.Web.Models.CartViewModel
+
+@{
+    ViewData["Title"] = "My Cart";
+}
+
+<div class="container-fluid py-4 cart-page">
+
+    <!-- PAGE HEADER -->
+
+    <div class="page-header mb-4">
+
+        <div>
+
+            <div class="text-uppercase text-primary fw-semibold small mb-1">
+                Shopping
+            </div>
+
+            <h1 class="page-title mb-2">
+                My Cart
+            </h1>
+
+            <p class="page-subtitle mb-0">
+                Review and manage the products currently in your cart.
+            </p>
+
+        </div>
+
+
+        <div class="page-header-actions">
+
+            <a asp-controller="Product"
+               asp-action="Index"
+               class="btn btn-primary px-4">
+                Continue Shopping
+            </a>
+
+            <a asp-controller="Dashboard"
+               asp-action="Index"
+               class="btn btn-outline-secondary px-4">
+                Dashboard
+            </a>
+
+        </div>
+
+    </div>
+
+
+    @if (Model.Items == null || Model.Items.Count == 0)
+    {
+        <!-- EMPTY CART -->
+
+        <div class="cart-empty-card">
+
+            <div class="cart-empty-icon">
+                🛒
+            </div>
+
+            <div class="section-eyebrow">
+                CART
+            </div>
+
+            <h3 class="fw-bold mb-2">
+                Your cart is empty
+            </h3>
+
+            <p class="text-muted mb-4">
+                Add products from the Products page to start building your cart.
+            </p>
+
+            <a asp-controller="Product"
+               asp-action="Index"
+               class="btn btn-primary px-4">
+                Browse Products
+            </a>
+
+        </div>
+    }
+    else
+    {
+        <!-- CART CONTENT -->
+
+        <div class="row g-4 align-items-start">
+
+            <!-- CART ITEMS -->
+
+            <div class="col-12 col-xl-8">
+
+                <div class="cart-items-card">
+
+                    <div class="cart-card-header">
+
+                        <div>
+
+                            <div class="section-eyebrow">
+                                CART
+                            </div>
+
+                            <h3 class="section-title mb-1">
+                                Cart Items
+                            </h3>
+
+                            <p class="section-description">
+                                @Model.Items.Count item(s) currently in your cart.
+                            </p>
+
+                        </div>
+
+
+                        <div class="cart-count-badge">
+                            @Model.Items.Count item(s)
+                        </div>
+
+                    </div>
+
+
+                    <div class="cart-items-list">
+
+                        @foreach (var item in Model.Items)
+                        {
+                            <div class="cart-item">
+
+                                <!-- PRODUCT -->
+
+                                <div class="cart-product-info">
+
+                                    <div class="cart-product-icon">
+                                        🛍
+                                    </div>
+
+                                    <div class="cart-product-details">
+
+                                        <h5 class="cart-product-name mb-1">
+                                            @item.Name
+                                        </h5>
+
+                                        <span class="cart-product-id">
+                                            Product #@item.ProductId
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- PRICE -->
+
+                                <div class="cart-item-column">
+
+                                    <span class="cart-column-label">
+                                        Price
+                                    </span>
+
+                                    <span class="cart-item-price">
+                                        ₹@item.Price.ToString("N2")
+                                    </span>
+
+                                </div>
+
+
+                                <!-- QUANTITY -->
+
+                                <div class="cart-item-column">
+
+                                    <span class="cart-column-label">
+                                        Quantity
+                                    </span>
+
+                                    <form asp-controller="Cart"
+                                          asp-action="UpdateQuantity"
+                                          method="post"
+                                          class="cart-quantity-form">
+
+                                        <input type="hidden"
+                                               name="productId"
+                                               value="@item.ProductId" />
+
+                                        <input type="number"
+                                               name="quantity"
+                                               value="@item.Quantity"
+                                               min="1"
+                                               class="form-control cart-quantity-input" />
+
+                                        <button type="submit"
+                                                class="btn btn-sm btn-outline-primary">
+                                            Update
+                                        </button>
+
+                                    </form>
+
+                                </div>
+
+
+                                <!-- TOTAL -->
+
+                                <div class="cart-item-column cart-total-column">
+
+                                    <span class="cart-column-label">
+                                        Total
+                                    </span>
+
+                                    <span class="cart-item-total">
+                                        ₹@item.Total.ToString("N2")
+                                    </span>
+
+                                </div>
+
+
+                                <!-- REMOVE -->
+
+                                <div class="cart-remove-column">
+
+                                    <form asp-controller="Cart"
+                                          asp-action="RemoveFromCart"
+                                          method="post"
+                                          onsubmit="return confirm('Remove this product from your cart?');">
+
+                                        <input type="hidden"
+                                               name="productId"
+                                               value="@item.ProductId" />
+
+                                        <button type="submit"
+                                                class="btn btn-sm btn-outline-danger">
+                                            Remove
+                                        </button>
+
+                                    </form>
+
+                                </div>
+
+                            </div>
+                        }
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- CART SUMMARY -->
+
+            <div class="col-12 col-xl-4">
+
+                <div class="cart-summary-card">
+
+                    <div class="cart-summary-header">
+
+                        <div class="section-eyebrow">
+                            SUMMARY
+                        </div>
+
+                        <h3 class="section-title mb-0">
+                            Cart Summary
+                        </h3>
+
+                    </div>
+
+
+                    <div class="cart-summary-body">
+
+                        <div class="summary-row">
+
+                            <span class="summary-label">
+                                Items
+                            </span>
+
+                            <span class="summary-value">
+                                @Model.Items.Count
+                            </span>
+
+                        </div>
+
+
+                        <div class="summary-row">
+
+                            <span class="summary-label">
+                                Cart ID
+                            </span>
+
+                            <span class="summary-value">
+                                #@Model.CartId
+                            </span>
+
+                        </div>
+
+
+                        <hr />
+
+
+                        <div class="summary-total">
+
+                            <div>
+
+                                <span class="summary-total-label">
+                                    Grand Total
+                                </span>
+
+                                <small class="d-block text-muted mt-1">
+                                    Final cart value
+                                </small>
+
+                            </div>
+
+                            <span class="summary-total-value">
+                                ₹@Model.GrandTotal.ToString("N2")
+                            </span>
+
+                        </div>
+
+
+                        <div class="summary-actions">
+
+                            <a asp-controller="Product"
+                               asp-action="Index"
+                               class="btn btn-primary w-100">
+                                Continue Shopping
+                            </a>
+
+                            <a asp-controller="Dashboard"
+                               asp-action="Index"
+                               class="btn btn-light border w-100">
+                                Back to Dashboard
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    }
+
+</div>

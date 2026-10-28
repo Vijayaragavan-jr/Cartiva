@@ -1,0 +1,47 @@
+﻿@{
+    ViewData["Title"] = "Cartiva";
+}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-9">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body text-center p-5">
+
+                    <h1 class="display-5 fw-bold text-primary mb-3">
+                        Welcome to Cartiva
+                    </h1>
+
+                    <p class="lead text-muted mb-4">
+                        Your e-commerce management platform.
+                    </p>
+
+                    <div class="d-flex flex-wrap justify-content-center gap-2">
+
+                        <a asp-controller="Account"
+                           asp-action="Login"
+                           class="btn btn-primary px-4">
+                            Login
+                        </a>
+
+                        <a asp-controller="Account"
+                           asp-action="Register"
+                           class="btn btn-outline-primary px-4">
+                            Create Account
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

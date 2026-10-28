@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuthHub</title>
+    <link rel="stylesheet" href="style.css?v=2">
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="brand">AuthHub</div>
+
+        <nav id="mainNavigation" class="navigation hidden">
+            <button class="nav-button active" data-tab="productsTab">
+                Products
+            </button>
+
+            <button class="nav-button" data-tab="cartTab">
+                Cart
+            </button>
+
+            <button class="nav-button" data-tab="profileTab">
+                Profile
+            </button>
+
+            <button id="logoutBtn" class="logout-button">
+                Logout
+            </button>
+        </nav>
+    </header>
+
+    <main class="container">
+
+        <!-- Authentication -->
+        <section id="authSection" class="auth-section">
+
+            <div class="auth-card">
+
+                <div class="auth-tabs">
+                    <button id="loginTabBtn" class="auth-tab active">
+                        Login
+                    </button>
+
+                    <button id="registerTabBtn" class="auth-tab">
+                        Register
+                    </button>
+                </div>
+
+                <!-- Login -->
+                <div id="loginForm" class="auth-form">
+
+                    <h1>Welcome back</h1>
+                    <p class="subtitle">
+                        Sign in to continue to AuthHub
+                    </p>
+
+                    <label for="loginEmail">Email</label>
+                    <input
+                        type="email"
+                        id="loginEmail"
+                        placeholder="Enter your email"
+                    >
+
+                    <label for="loginPassword">Password</label>
+                    <input
+                        type="password"
+                        id="loginPassword"
+                        placeholder="Enter your password"
+                    >
+
+                    <button id="loginBtn" class="primary-button">
+                        Login
+                    </button>
+
+                    <p id="loginMessage" class="message"></p>
+
+                </div>
+
+                <!-- Register -->
+                <div id="registerForm" class="auth-form hidden">
+
+                    <h1>Create account</h1>
+                    <p class="subtitle">
+                        Create your AuthHub account
+                    </p>
+
+                    <label for="registerUsername">Username</label>
+                    <input
+                        type="text"
+                        id="registerUsername"
+                        placeholder="Enter your username"
+                    >
+
+                    <label for="registerEmail">Email</label>
+                    <input
+                        type="email"
+                        id="registerEmail"
+                        placeholder="Enter your email"
+                    >
+
+                    <label for="registerPassword">Password</label>
+                    <input
+                        type="password"
+                        id="registerPassword"
+                        placeholder="Minimum 6 characters"
+                    >
+
+                    <button id="registerBtn" class="primary-button">
+                        Register
+                    </button>
+
+                    <p id="registerMessage" class="message"></p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- Application -->
+        <section id="applicationSection" class="hidden">
+
+            <!-- Products -->
+            <div id="productsTab" class="tab-content active">
+
+                <div class="section-header">
+                    <div>
+                        <h1>Products</h1>
+                        <p>Browse available products and add them to your cart.</p>
+                    </div>
+                </div>
+
+                <div id="productsContainer" class="product-grid"></div>
+
+                <p id="productsMessage" class="message"></p>
+
+            </div>
+
+            <!-- Cart -->
+            <div id="cartTab" class="tab-content hidden">
+
+                <div class="section-header">
+                    <div>
+                        <h1>Your Cart</h1>
+                        <p>Review your selected products and quantities.</p>
+                    </div>
+                </div>
+
+                <div id="cartContainer" class="cart-container"></div>
+
+                <p id="cartMessage" class="message"></p>
+
+            </div>
+
+            <!-- Profile -->
+            <div id="profileTab" class="tab-content hidden">
+
+                <div class="section-header">
+                    <div>
+                        <h1>Profile</h1>
+                        <p>Your AuthHub account information.</p>
+                    </div>
+                </div>
+
+                <div id="profileContainer" class="profile-card"></div>
+
+                <p id="profileMessage" class="message"></p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="script.js?v=2"></script>
+
+</body>
+
+</html>

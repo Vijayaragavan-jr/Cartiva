@@ -1,0 +1,188 @@
+@model List<System.Text.Json.JsonElement>
+
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+        <div>
+            <h2 class="fw-bold">Admin Dashboard</h2>
+            <p class="text-muted mb-0">Manage your Cartiva products</p>
+        </div>
+
+        <div class="d-flex align-items-center gap-2 flex-wrap">
+            <a asp-controller="Admin"
+               asp-action="ExportProducts"
+               class="btn btn-success">
+                Export Products CSV
+            </a>
+
+            <span class="badge bg-dark fs-6">Administrator</span>
+        </div>
+    </div>
+
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="alert alert-danger">
+            @ViewBag.ErrorMessage
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-warning">
+            @TempData["Error"]
+        </div>
+    }
+
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <h5 class="card-title mb-3">Product Management</h5>
+
+            <form asp-controller="Admin"
+                  asp-action="Create"
+                  method="post"
+                  class="row g-3 mb-4">
+                @Html.AntiForgeryToken()
+
+                <div class="col-md-3">
+                    <label class="form-label">Product Name</label>
+                    <input name="name"
+                           class="form-control"
+                           placeholder="Product name"
+                           required />
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">Description</label>
+                    <input name="description"
+                           class="form-control"
+                           placeholder="Product description"
+                           required />
+                </div>
+
+                <div class="col-md-2">
+                    <label class="form-label">Price</label>
+                    <input name="price"
+                           type="number"
+                           min="0.01"
+                           step="0.01"
+                           class="form-control"
+                           placeholder="0.00"
+                           required />
+                </div>
+
+                <div class="col-md-3 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">
+                        Add Product
+                    </button>
+                </div>
+            </form>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Product</th>
+                            <th>Description</th>
+                            <th>Price</th>
+                            <th style="min-width: 260px;">Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @if (Model != null && Model.Count > 0)
+                        {
+                            @foreach (var product in Model)
+                            {
+                                var id = product.TryGetProperty("id", out var idValue)
+                                ? idValue.ToString() : "";
+
+                                var name = product.TryGetProperty("name", out var nameValue)
+                                ? nameValue.ToString() : "";
+
+                                var description = product.TryGetProperty("description", out var descriptionValue)
+                                ? descriptionValue.ToString() : "";
+
+                                var price = product.TryGetProperty("price", out var priceValue)
+                                ? priceValue.ToString() : "0";
+
+                                <tr>
+                                    <td>@id</td>
+                                    <td>@name</td>
+                                    <td>@description</td>
+                                    <td>@price</td>
+
+                                    <td>
+                                        <form asp-controller="Admin"
+                                              asp-action="Update"
+                                              method="post"
+                                              class="d-flex flex-wrap gap-2 mb-2">
+                                            @Html.AntiForgeryToken()
+
+                                            <input type="hidden"
+                                                   name="id"
+                                                   value="@id" />
+
+                                            <input name="name"
+                                                   value="@name"
+                                                   class="form-control form-control-sm"
+                                                   aria-label="Product name"
+                                                   required />
+
+                                            <input name="description"
+                                                   value="@description"
+                                                   class="form-control form-control-sm"
+                                                   aria-label="Product description"
+                                                   required />
+
+                                            <input name="price"
+                                                   value="@price"
+                                                   type="number"
+                                                   min="0.01"
+                                                   step="0.01"
+                                                   class="form-control form-control-sm"
+                                                   aria-label="Product price"
+                                                   required />
+
+                                            <button type="submit"
+                                                    class="btn btn-sm btn-success">
+                                                Save
+                                            </button>
+                                        </form>
+
+                                        <form asp-controller="Admin"
+                                              asp-action="Delete"
+                                              method="post"
+                                              onsubmit="return confirm('Delete this product?');">
+                                            @Html.AntiForgeryToken()
+
+                                            <input type="hidden"
+                                                   name="id"
+                                                   value="@id" />
+
+                                            <button type="submit"
+                                                    class="btn btn-sm btn-danger">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="5" class="text-center py-4">
+                                    No products found.
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
